@@ -1,0 +1,26 @@
+{"time":"2025-05-31T19:10:37.338138393Z","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/content/wandb/run-20250531_191035-64ci1cep/logs/debug-core.log"}
+{"time":"2025-05-31T19:10:37.664901472Z","level":"INFO","msg":"created new stream","id":"64ci1cep"}
+{"time":"2025-05-31T19:10:37.66497342Z","level":"INFO","msg":"stream: started","id":"64ci1cep"}
+{"time":"2025-05-31T19:10:37.664989338Z","level":"INFO","msg":"writer: Do: started","stream_id":"64ci1cep"}
+{"time":"2025-05-31T19:10:37.665055109Z","level":"INFO","msg":"sender: started","stream_id":"64ci1cep"}
+{"time":"2025-05-31T19:10:37.665079364Z","level":"INFO","msg":"handler: started","stream_id":"64ci1cep"}
+{"time":"2025-05-31T19:10:38.013871704Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-31T19:30:25.393578617Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:30:28.341665718Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:31:59.794580447Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:32:02.255839185Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:33:07.436982077Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:33:28.261019685Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:34:49.773257771Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:35:13.873315727Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:36:06.392771128Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:36:54.788375593Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:39:19.686179335Z","level":"ERROR","msg":"watcher: error in file watcher: error: watched file or folder deleted"}
+{"time":"2025-05-31T19:39:19.687058134Z","level":"ERROR","msg":"watcher: error in file watcher: error: watched file or folder deleted"}
+{"time":"2025-05-31T19:41:00.818604965Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:41:00.923945128Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:41:28.411342152Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:41:56.516112373Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:46:59.065774624Z","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-31T19:46:59.174070534Z","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-31T19:48:53.661298569Z","level":"INFO","msg":"Pausing system monitor"}

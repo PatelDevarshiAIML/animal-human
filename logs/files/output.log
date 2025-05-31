@@ -1,0 +1,2665 @@
+Starting training with YOLOv8l
+Dataset: /content/dataset_2
+Classes: ['animals', 'humans']
+Ultralytics 8.3.146 🚀 Python-3.11.12 torch-2.6.0+cu124 CUDA:0 (Tesla T4, 15095MiB)
+[34m[1mengine/trainer: [0magnostic_nms=False, amp=True, augment=False, auto_augment=randaugment, batch=4, bgr=0.0, box=7.5, cache=False, cfg=None, classes=None, close_mosaic=10, cls=0.5, conf=None, copy_paste=0.0, copy_paste_mode=flip, cos_lr=False, cutmix=0.0, data=/content/dataset_2/dataset.yaml, degrees=0.0, deterministic=True, device=0, dfl=1.5, dnn=False, dropout=0.0, dynamic=False, embed=None, epochs=20, erasing=0.4, exist_ok=False, fliplr=0.5, flipud=0.0, format=torchscript, fraction=1.0, freeze=None, half=False, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, imgsz=900, int8=False, iou=0.7, keras=False, kobj=1.0, line_width=None, lr0=0.01, lrf=0.01, mask_ratio=4, max_det=300, mixup=0.0, mode=train, model=yolov8l.pt, momentum=0.937, mosaic=1.0, multi_scale=False, name=my-yolov8-project-colab-16, nbs=64, nms=False, opset=None, optimize=False, optimizer=SGD, overlap_mask=True, patience=15, perspective=0.0, plots=True, pose=12.0, pretrained=True, profile=False, project=runs/detect, rect=False, resume=False, retina_masks=False, save=True, save_conf=False, save_crop=False, save_dir=runs/detect/my-yolov8-project-colab-16, save_frames=False, save_json=False, save_period=10, save_txt=False, scale=0.5, seed=0, shear=0.0, show=False, show_boxes=True, show_conf=True, show_labels=True, simplify=True, single_cls=False, source=None, split=val, stream_buffer=False, task=detect, time=None, tracker=botsort.yaml, translate=0.1, val=True, verbose=True, vid_stride=1, visualize=False, warmup_bias_lr=0.1, warmup_epochs=3, warmup_momentum=0.8, weight_decay=0.0005, workers=8, workspace=None
+Overriding model.yaml nc=80 with nc=2
+
+                   from  n    params  module                                       arguments
+  0                  -1  1      1856  ultralytics.nn.modules.conv.Conv             [3, 64, 3, 2]
+  1                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]
+  2                  -1  3    279808  ultralytics.nn.modules.block.C2f             [128, 128, 3, True]
+  3                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]
+  4                  -1  6   2101248  ultralytics.nn.modules.block.C2f             [256, 256, 6, True]
+  5                  -1  1   1180672  ultralytics.nn.modules.conv.Conv             [256, 512, 3, 2]
+  6                  -1  6   8396800  ultralytics.nn.modules.block.C2f             [512, 512, 6, True]
+  7                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]
+  8                  -1  3   4461568  ultralytics.nn.modules.block.C2f             [512, 512, 3, True]
+  9                  -1  1    656896  ultralytics.nn.modules.block.SPPF            [512, 512, 5]
+ 10                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']
+ 11             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]
+ 12                  -1  3   4723712  ultralytics.nn.modules.block.C2f             [1024, 512, 3]
+ 13                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']
+ 14             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]
+ 15                  -1  3   1247744  ultralytics.nn.modules.block.C2f             [768, 256, 3]
+ 16                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]
+ 17            [-1, 12]  1         0  ultralytics.nn.modules.conv.Concat           [1]
+ 18                  -1  3   4592640  ultralytics.nn.modules.block.C2f             [768, 512, 3]
+ 19                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]
+ 20             [-1, 9]  1         0  ultralytics.nn.modules.conv.Concat           [1]
+ 21                  -1  3   4723712  ultralytics.nn.modules.block.C2f             [1024, 512, 3]
+ 22        [15, 18, 21]  1   5584342  ultralytics.nn.modules.head.Detect           [2, [256, 512, 512]]
+Model summary: 209 layers, 43,631,382 parameters, 43,631,366 gradients, 165.4 GFLOPs
+
+Transferred 589/595 items from pretrained weights
+Freezing layer 'model.22.dfl.conv.weight'
+[34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
+[34m[1mAMP: [0mchecks passed ✅
+WARNING ⚠️ imgsz=[900] must be multiple of max stride 32, updating to [928]
+[34m[1mtrain: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 2618.7±627.7 MB/s, size: 1939.5 KB)
+[34m[1mtrain: [0mScanning /content/dataset_2/train/labels.cache... 66 images, 0 backgrounds, 0 corrupt: 100%|██████████| 66/66 [00:00<?, ?it/s]
+[34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, method='weighted_average', num_output_channels=3), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 946.9±1085.5 MB/s, size: 2329.0 KB)
+[34m[1mval: [0mScanning /content/dataset_2/val/labels.cache... 26 images, 0 backgrounds, 0 corrupt: 100%|██████████| 26/26 [00:00<?, ?it/s]
+Plotting labels to runs/detect/my-yolov8-project-colab-16/labels.jpg...
+[34m[1moptimizer:[0m SGD(lr=0.01, momentum=0.937) with parameter groups 97 weight(decay=0.0), 104 weight(decay=0.0005), 103 bias(decay=0.0)
+Image sizes 928 train, 928 val
+Using 2 dataloader workers
+Logging results to [1mruns/detect/my-yolov8-project-colab-16[0m
+Starting training for 20 epochs...
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       1/20      5.72G      1.685      2.986       2.41         10        928: 100%|██████████| 17/17 [00:18<00:00,  1.08s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.66it/s]
+                   all         26         61      0.694       0.66      0.738      0.417
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       2/20      5.94G        1.6      1.808      2.138         10        928: 100%|██████████| 17/17 [00:11<00:00,  1.48it/s]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.30it/s]
+                   all         26         61      0.849      0.808      0.894      0.531
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       3/20      6.28G      1.605      1.746      2.096         18        928: 100%|██████████| 17/17 [00:11<00:00,  1.43it/s]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.52it/s]
+                   all         26         61      0.823      0.836      0.909      0.523
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       4/20       6.3G      1.499      1.711       1.94          7        928: 100%|██████████| 17/17 [00:19<00:00,  1.15s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  3.01it/s]
+                   all         26         61      0.743      0.866      0.884      0.492
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       5/20      6.63G      1.416      1.715      1.846          9        928: 100%|██████████| 17/17 [00:22<00:00,  1.34s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:02<00:00,  1.62it/s]
+                   all         26         61      0.673      0.706      0.777      0.467
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       6/20      6.63G      1.469      1.548       1.81          9        928: 100%|██████████| 17/17 [00:23<00:00,  1.35s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:02<00:00,  1.49it/s]
+                   all         26         61      0.834      0.849      0.921      0.571
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       7/20      6.64G      1.418      1.553      1.705          7        928: 100%|██████████| 17/17 [00:26<00:00,  1.58s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:02<00:00,  1.65it/s]
+                   all         26         61      0.685      0.866      0.939      0.564
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       8/20      6.66G      1.399      1.776      1.763         15        928: 100%|██████████| 17/17 [00:24<00:00,  1.46s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  3.36it/s]
+                   all         26         61      0.857      0.913      0.941      0.576
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       9/20      6.99G      1.436      1.317      1.714         12        928: 100%|██████████| 17/17 [00:28<00:00,  1.66s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.85it/s]
+                   all         26         61       0.86      0.918      0.942      0.606
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      10/20      6.99G      1.379      1.125      1.715         12        928: 100%|██████████| 17/17 [00:33<00:00,  1.99s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.38it/s]
+                   all         26         61      0.983      0.859      0.953      0.609
+Closing dataloader mosaic
+[34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, method='weighted_average', num_output_channels=3), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      11/20      6.99G       1.27      1.024      1.733          4        928: 100%|██████████| 17/17 [00:24<00:00,  1.41s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.79it/s]
+                   all         26         61      0.966       0.92      0.969      0.617
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      12/20      6.99G      1.356      1.075      1.813          2        928: 100%|██████████| 17/17 [00:12<00:00,  1.31it/s]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  3.83it/s]
+                   all         26         61          1      0.881      0.964      0.614
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      13/20      6.99G      1.264     0.8788      1.742          4        928: 100%|██████████| 17/17 [00:16<00:00,  1.04it/s]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  3.40it/s]
+                   all         26         61      0.996      0.915      0.968       0.65
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      14/20      7.02G      1.201     0.7743      1.724          3        928: 100%|██████████| 17/17 [00:17<00:00,  1.01s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  3.09it/s]
+                   all         26         61      0.962      0.923      0.966      0.638
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      15/20      7.02G      1.248     0.7359      1.702          2        928: 100%|██████████| 17/17 [00:19<00:00,  1.13s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.52it/s]
+                   all         26         61      0.982        0.9      0.967      0.688
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      16/20      7.02G       1.06     0.6868      1.595          5        928: 100%|██████████| 17/17 [00:25<00:00,  1.47s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  3.37it/s]
+                   all         26         61      0.945      0.957      0.971      0.688
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      17/20      7.02G      1.154     0.6766      1.696          4        928: 100%|██████████| 17/17 [00:14<00:00,  1.17it/s]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.96it/s]
+                   all         26         61       0.95      0.977      0.974      0.679
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      18/20      7.04G      1.086     0.6649      1.553          9        928: 100%|██████████| 17/17 [00:24<00:00,  1.42s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.41it/s]
+                   all         26         61      0.962      0.978      0.975      0.695
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      19/20      6.06G      1.024     0.6416      1.591          6        928: 100%|██████████| 17/17 [00:25<00:00,  1.48s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  2.99it/s]
+                   all         26         61      0.974      0.965      0.975        0.7
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      20/20      6.06G      1.115     0.6534       1.66          3        928: 100%|██████████| 17/17 [00:22<00:00,  1.32s/it]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:01<00:00,  3.34it/s]
+                   all         26         61      0.977      0.965      0.974      0.705
+
+20 epochs completed in 0.207 hours.
+Optimizer stripped from runs/detect/my-yolov8-project-colab-16/weights/last.pt, 87.7MB
+Optimizer stripped from runs/detect/my-yolov8-project-colab-16/weights/best.pt, 87.7MB
+
+Validating runs/detect/my-yolov8-project-colab-16/weights/best.pt...
+Ultralytics 8.3.146 🚀 Python-3.11.12 torch-2.6.0+cu124 CUDA:0 (Tesla T4, 15095MiB)
+Model summary (fused): 112 layers, 43,608,150 parameters, 0 gradients, 164.8 GFLOPs
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 4/4 [00:02<00:00,  1.66it/s]
+                   all         26         61      0.977      0.965      0.974      0.703
+               animals         12         23      0.994      0.957      0.956       0.72
+                humans         14         38       0.96      0.974      0.991      0.687
+Speed: 0.4ms preprocess, 67.2ms inference, 0.0ms loss, 3.4ms postprocess per image
+Results saved to [1mruns/detect/my-yolov8-project-colab-16[0m
+📈 Creating training plots...
+🎯 Generating confusion matrix...
+Ultralytics 8.3.146 🚀 Python-3.11.12 torch-2.6.0+cu124 CUDA:0 (Tesla T4, 15095MiB)
+Model summary (fused): 112 layers, 43,608,150 parameters, 0 gradients, 164.8 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 3413.7±433.2 MB/s, size: 1798.0 KB)
+[34m[1mval: [0mScanning /content/dataset_2/val/labels.cache... 26 images, 0 backgrounds, 0 corrupt: 100%|██████████| 26/26 [00:00<?, ?it/s]
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 7/7 [00:20<00:00,  2.90s/it]
+                   all         26         61      0.976      0.965      0.974        0.7
+               animals         12         23      0.993      0.957      0.956      0.711
+                humans         14         38       0.96      0.974      0.991      0.688
+Speed: 0.5ms preprocess, 79.3ms inference, 0.0ms loss, 2.5ms postprocess per image
+Results saved to [1mruns/detect/my-yolov8-project-colab-162[0m
+Loading model from: /content/runs/detect/my-yolov8-project-colab-16/weights/best.pt
+Model loaded successfully!
+Classes: ['animals', 'humans']
+Device: cpu
+Processing image: /content/images (1).jpg
+
+0: 640x928 1 humans, 85.6ms
+Speed: 10.6ms preprocess, 85.6ms inference, 9.0ms postprocess per image at shape (1, 3, 640, 928)
+Annotated image saved: inference_results/images (1)_detected.jpg
+Found 1 objects in 1.420s
+usage: colab_kernel_launcher.py [-h] --model MODEL --source SOURCE
+                                [--conf CONF] [--iou IOU] [--device DEVICE]
+                                [--save] [--show] [--json] [--output OUTPUT]
+colab_kernel_launcher.py: error: the following arguments are required: --model, --source
+/usr/local/lib/python3.11/dist-packages/IPython/core/interactiveshell.py:3561: UserWarning:
+
+To exit: use 'exit', 'quit', or Ctrl-D.
+Loading model from: /content/runs/detect/my-yolov8-project-colab-16/weights/best.pt
+Model loaded successfully!
+Classes: ['animals', 'humans']
+Device: cpu
+Processing image: /content/images (2).jpg
+
+0: 544x928 1 animals, 113.5ms
+Speed: 4.5ms preprocess, 113.5ms inference, 2.9ms postprocess per image at shape (1, 3, 544, 928)
+Annotated image saved: inference_results/images (2)_detected.jpg
+Found 1 objects in 1.707s
+
+usage: colab_kernel_launcher.py [-h] --model MODEL --source SOURCE
+                                [--conf CONF] [--iou IOU] [--device DEVICE]
+                                [--save] [--show] [--json] [--output OUTPUT]
+colab_kernel_launcher.py: error: the following arguments are required: --model, --source
+Loading model from: /content/runs/detect/my-yolov8-project-colab-16/weights/best.pt
+Model loaded successfully!
+Classes: ['animals', 'humans']
+Device: cpu
+Processing video: /content/sample_vdo.mp4
+Video info: 1280x720, 25 FPS, 286 frames
+Processing video frames...
+
+0: 544x928 (no detections), 75.0ms
+Speed: 5.3ms preprocess, 75.0ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 68.3ms
+Speed: 5.7ms preprocess, 68.3ms inference, 1.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 42.6ms
+Speed: 6.0ms preprocess, 42.6ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 42.5ms
+Speed: 5.6ms preprocess, 42.5ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 44.4ms
+Speed: 5.0ms preprocess, 44.4ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 44.5ms
+Speed: 7.3ms preprocess, 44.5ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.5ms
+Speed: 5.8ms preprocess, 43.5ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.5ms
+Speed: 5.8ms preprocess, 43.5ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.1ms
+Speed: 5.9ms preprocess, 43.1ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 44.8ms
+Speed: 5.3ms preprocess, 44.8ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 44.9ms
+Speed: 5.4ms preprocess, 44.9ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 6.9ms preprocess, 43.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.9ms preprocess, 42.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.8ms preprocess, 41.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 5.4ms preprocess, 42.2ms inference, 3.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 6.2ms preprocess, 42.6ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 5.7ms preprocess, 42.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.4ms preprocess, 44.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 5.5ms preprocess, 44.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 6.0ms preprocess, 42.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 7.9ms preprocess, 42.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.4ms preprocess, 41.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 5.8ms preprocess, 42.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 6.5ms preprocess, 42.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 6.1ms preprocess, 44.2ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.9ms
+Speed: 5.3ms preprocess, 44.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 5.5ms preprocess, 43.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.7ms preprocess, 42.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 5.5ms preprocess, 43.6ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.4ms preprocess, 43.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 10.5% (30/286) - Avg inference: 0.087s/frame
+
+0: 544x928 1 animals, 43.5ms
+Speed: 6.0ms preprocess, 43.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.9ms
+Speed: 5.6ms preprocess, 44.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.9ms preprocess, 43.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.3ms
+Speed: 5.6ms preprocess, 44.3ms inference, 2.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 3.7ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 5.8ms preprocess, 43.5ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.7ms preprocess, 43.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.8ms preprocess, 43.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.8ms preprocess, 42.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 5.3ms preprocess, 43.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 5.1ms preprocess, 43.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.9ms preprocess, 44.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.7ms
+Speed: 5.2ms preprocess, 44.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 5.5ms preprocess, 44.0ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.7ms preprocess, 43.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.9ms preprocess, 43.2ms inference, 3.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 5.3ms preprocess, 43.5ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 4.6ms preprocess, 42.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 4.0ms preprocess, 42.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 5.5ms preprocess, 44.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.1ms
+Speed: 5.5ms preprocess, 44.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.4ms
+Speed: 5.3ms preprocess, 44.4ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 8.8ms preprocess, 42.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.4ms
+Speed: 7.6ms preprocess, 42.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 5.6ms preprocess, 42.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.4ms preprocess, 41.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.4ms
+Speed: 6.0ms preprocess, 42.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 6.0ms preprocess, 43.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.5ms
+Speed: 5.4ms preprocess, 45.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.3ms
+Speed: 5.4ms preprocess, 44.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 21.0% (60/286) - Avg inference: 0.055s/frame
+
+0: 544x928 1 animals, 43.1ms
+Speed: 5.3ms preprocess, 43.1ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.9ms
+Speed: 5.7ms preprocess, 45.9ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 6.2ms preprocess, 41.8ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.8ms preprocess, 41.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 39.6ms
+Speed: 7.3ms preprocess, 39.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 7.2ms preprocess, 43.1ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 9.8ms preprocess, 42.1ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 6.6ms preprocess, 42.9ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 6.6ms preprocess, 41.2ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 7.7ms preprocess, 42.2ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 7.0ms preprocess, 41.8ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.9ms preprocess, 41.9ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.6ms preprocess, 43.0ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.4ms
+Speed: 6.3ms preprocess, 40.4ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 5.9ms preprocess, 40.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.8ms
+Speed: 5.7ms preprocess, 44.8ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 6.4ms preprocess, 43.7ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.4ms
+Speed: 13.8ms preprocess, 40.4ms inference, 18.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 122.5ms
+Speed: 12.5ms preprocess, 122.5ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 46.3ms
+Speed: 7.8ms preprocess, 46.3ms inference, 3.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 8.7ms preprocess, 42.6ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 73.2ms
+Speed: 22.4ms preprocess, 73.2ms inference, 15.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 35.0ms preprocess, 42.5ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 47.2ms
+Speed: 7.5ms preprocess, 47.2ms inference, 10.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.4ms
+Speed: 24.4ms preprocess, 45.4ms inference, 11.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 66.0ms
+Speed: 10.9ms preprocess, 66.0ms inference, 2.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 103.9ms
+Speed: 13.4ms preprocess, 103.9ms inference, 11.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 20.9ms preprocess, 44.0ms inference, 4.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 94.4ms
+Speed: 14.7ms preprocess, 94.4ms inference, 20.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 12.4ms preprocess, 41.3ms inference, 11.9ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 31.5% (90/286) - Avg inference: 0.077s/frame
+
+0: 544x928 1 animals, 41.5ms
+Speed: 7.0ms preprocess, 41.5ms inference, 5.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 9.6ms preprocess, 42.2ms inference, 4.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 49.7ms
+Speed: 18.4ms preprocess, 49.7ms inference, 3.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 9.3ms preprocess, 41.2ms inference, 5.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.4ms
+Speed: 10.2ms preprocess, 45.4ms inference, 5.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 48.6ms
+Speed: 33.7ms preprocess, 48.6ms inference, 6.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 9.6ms preprocess, 40.8ms inference, 7.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 98.0ms
+Speed: 7.7ms preprocess, 98.0ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 51.1ms
+Speed: 10.4ms preprocess, 51.1ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 83.7ms
+Speed: 13.2ms preprocess, 83.7ms inference, 7.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 39.5ms
+Speed: 15.3ms preprocess, 39.5ms inference, 13.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 56.4ms
+Speed: 16.6ms preprocess, 56.4ms inference, 3.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 8.4ms preprocess, 40.9ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 89.8ms
+Speed: 22.8ms preprocess, 89.8ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 103.6ms
+Speed: 14.4ms preprocess, 103.6ms inference, 13.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 74.1ms
+Speed: 24.3ms preprocess, 74.1ms inference, 22.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 142.1ms
+Speed: 12.2ms preprocess, 142.1ms inference, 9.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 75.9ms
+Speed: 5.7ms preprocess, 75.9ms inference, 11.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 38.0ms
+Speed: 15.7ms preprocess, 38.0ms inference, 5.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 11.8ms preprocess, 42.0ms inference, 5.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 93.5ms
+Speed: 16.0ms preprocess, 93.5ms inference, 9.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 94.1ms
+Speed: 13.9ms preprocess, 94.1ms inference, 15.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 9.1ms preprocess, 41.6ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 90.5ms
+Speed: 21.8ms preprocess, 90.5ms inference, 4.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 7.4ms preprocess, 41.5ms inference, 3.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 12.4ms preprocess, 43.7ms inference, 14.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 7.9ms preprocess, 42.2ms inference, 3.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 76.1ms
+Speed: 31.7ms preprocess, 76.1ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 56.3ms
+Speed: 12.8ms preprocess, 56.3ms inference, 3.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 13.6ms preprocess, 41.4ms inference, 5.0ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 42.0% (120/286) - Avg inference: 0.100s/frame
+
+0: 544x928 1 animals, 41.6ms
+Speed: 21.3ms preprocess, 41.6ms inference, 9.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 52.0ms
+Speed: 5.5ms preprocess, 52.0ms inference, 3.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 8.0ms preprocess, 41.3ms inference, 7.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 55.2ms
+Speed: 12.9ms preprocess, 55.2ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 8.5ms preprocess, 41.1ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.5ms preprocess, 43.0ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 6.1ms preprocess, 43.6ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 5.5ms preprocess, 42.8ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 8.6ms preprocess, 40.5ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.8ms preprocess, 41.5ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.5ms
+Speed: 6.4ms preprocess, 44.5ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.9ms preprocess, 44.6ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 6.3ms preprocess, 43.5ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 6.0ms preprocess, 42.3ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 6.6ms preprocess, 43.1ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 9.2ms preprocess, 42.5ms inference, 2.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 6.0ms preprocess, 43.0ms inference, 2.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 11.0ms preprocess, 41.0ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 7.8ms preprocess, 42.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 5.7ms preprocess, 42.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 4.7ms preprocess, 42.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.5ms preprocess, 44.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.5ms
+Speed: 6.3ms preprocess, 44.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 5.9ms preprocess, 43.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 4.4ms preprocess, 42.9ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.4ms
+Speed: 5.2ms preprocess, 43.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 6.2ms preprocess, 42.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 5.4ms preprocess, 42.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.4ms
+Speed: 5.3ms preprocess, 44.4ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.2ms preprocess, 43.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 52.4% (150/286) - Avg inference: 0.059s/frame
+
+0: 544x928 1 animals, 44.1ms
+Speed: 4.1ms preprocess, 44.1ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.5ms
+Speed: 5.4ms preprocess, 44.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.8ms preprocess, 42.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 6.0ms preprocess, 43.6ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.9ms
+Speed: 5.8ms preprocess, 43.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.4ms
+Speed: 5.5ms preprocess, 43.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 5.9ms preprocess, 44.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.8ms preprocess, 44.2ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.1ms
+Speed: 5.4ms preprocess, 45.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.5ms preprocess, 44.2ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.1ms
+Speed: 6.3ms preprocess, 44.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.9ms preprocess, 42.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.3ms preprocess, 42.0ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 5.7ms preprocess, 42.2ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.5ms
+Speed: 5.3ms preprocess, 44.5ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.8ms preprocess, 44.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 5.8ms preprocess, 43.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 5.4ms preprocess, 42.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 6.1ms preprocess, 43.2ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 6.0ms preprocess, 42.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.4ms preprocess, 43.2ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.8ms
+Speed: 5.8ms preprocess, 44.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.9ms
+Speed: 5.5ms preprocess, 44.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 9.7ms preprocess, 42.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.5ms preprocess, 44.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 5.7ms preprocess, 43.8ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.4ms
+Speed: 5.8ms preprocess, 44.4ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.9ms preprocess, 43.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.8ms preprocess, 43.2ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 5.3ms preprocess, 43.5ms inference, 2.7ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 62.9% (180/286) - Avg inference: 0.055s/frame
+
+0: 544x928 1 animals, 42.4ms
+Speed: 7.9ms preprocess, 42.4ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.3ms preprocess, 42.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.2ms preprocess, 42.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.2ms preprocess, 43.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 5.3ms preprocess, 43.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 5.3ms preprocess, 41.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.3ms
+Speed: 5.4ms preprocess, 43.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.5ms preprocess, 43.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.5ms preprocess, 44.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.9ms preprocess, 44.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.9ms
+Speed: 5.3ms preprocess, 43.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 5.8ms preprocess, 42.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.3ms
+Speed: 6.0ms preprocess, 43.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 5.4ms preprocess, 43.6ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 6.3ms preprocess, 42.9ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 6.0ms preprocess, 42.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 4.3ms preprocess, 41.3ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 6.7ms preprocess, 42.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 5.7ms preprocess, 42.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.9ms preprocess, 44.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.9ms
+Speed: 6.0ms preprocess, 44.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 4.4ms preprocess, 43.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 6.3ms preprocess, 43.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.9ms preprocess, 44.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 5.7ms preprocess, 44.0ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.3ms
+Speed: 5.3ms preprocess, 43.3ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.3ms preprocess, 43.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 5.3ms preprocess, 43.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.5ms preprocess, 44.2ms inference, 2.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 4.6ms preprocess, 41.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 73.4% (210/286) - Avg inference: 0.055s/frame
+
+0: 544x928 1 animals, 42.4ms
+Speed: 5.4ms preprocess, 42.4ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 5.8ms preprocess, 42.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 4.3ms preprocess, 43.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.7ms preprocess, 44.6ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 6.0ms preprocess, 43.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.6ms
+Speed: 5.5ms preprocess, 45.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 5.7ms preprocess, 43.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 5.3ms preprocess, 42.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.1ms
+Speed: 5.3ms preprocess, 44.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.8ms preprocess, 44.2ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.4ms
+Speed: 5.3ms preprocess, 43.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.4ms
+Speed: 5.2ms preprocess, 44.4ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.0ms
+Speed: 5.7ms preprocess, 45.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 46.1ms
+Speed: 5.9ms preprocess, 46.1ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 46.4ms
+Speed: 5.2ms preprocess, 46.4ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.1ms
+Speed: 5.4ms preprocess, 44.1ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.4ms
+Speed: 5.3ms preprocess, 43.4ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.9ms preprocess, 43.2ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 5.4ms preprocess, 43.6ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 5.7ms preprocess, 44.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.0ms
+Speed: 5.5ms preprocess, 45.0ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.9ms
+Speed: 5.4ms preprocess, 43.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 5.5ms preprocess, 43.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.7ms preprocess, 42.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.2ms preprocess, 42.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.7ms preprocess, 42.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 4.5ms preprocess, 42.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 6.1ms preprocess, 42.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 6.2ms preprocess, 44.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.7ms
+Speed: 5.6ms preprocess, 44.7ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 83.9% (240/286) - Avg inference: 0.055s/frame
+
+0: 544x928 1 animals, 44.1ms
+Speed: 5.6ms preprocess, 44.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.3ms preprocess, 43.2ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.4ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 5.7ms preprocess, 42.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.7ms preprocess, 42.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.3ms
+Speed: 4.9ms preprocess, 44.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.4ms
+Speed: 4.5ms preprocess, 44.4ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.3ms
+Speed: 5.4ms preprocess, 45.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.9ms
+Speed: 5.3ms preprocess, 43.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.4ms
+Speed: 6.0ms preprocess, 43.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.5ms preprocess, 43.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.6ms preprocess, 43.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.3ms preprocess, 43.0ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.2ms preprocess, 43.2ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.8ms
+Speed: 5.7ms preprocess, 45.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.2ms
+Speed: 5.8ms preprocess, 44.2ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.7ms preprocess, 43.7ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.8ms preprocess, 43.7ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.5ms preprocess, 43.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.8ms
+Speed: 5.5ms preprocess, 43.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.3ms
+Speed: 5.7ms preprocess, 43.3ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.5ms preprocess, 44.6ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 6.5ms preprocess, 41.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 8.8ms preprocess, 42.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 6.0ms preprocess, 43.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 6.5ms preprocess, 42.3ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 6.9ms preprocess, 43.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 5.6ms preprocess, 43.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 9.3ms preprocess, 41.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 6.6ms preprocess, 42.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 94.4% (270/286) - Avg inference: 0.055s/frame
+
+0: 544x928 1 animals, 45.2ms
+Speed: 5.4ms preprocess, 45.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.7ms preprocess, 43.7ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.1ms
+Speed: 5.7ms preprocess, 45.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.0ms
+Speed: 6.1ms preprocess, 45.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 45.7ms
+Speed: 5.2ms preprocess, 45.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.7ms
+Speed: 5.3ms preprocess, 43.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.1ms
+Speed: 5.7ms preprocess, 44.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.4ms
+Speed: 5.3ms preprocess, 43.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.2ms preprocess, 42.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.1ms
+Speed: 5.9ms preprocess, 44.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.6ms
+Speed: 5.8ms preprocess, 44.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.1ms
+Speed: 4.0ms preprocess, 43.1ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.3ms
+Speed: 5.5ms preprocess, 43.3ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.6ms
+Speed: 4.1ms preprocess, 43.6ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.5ms
+Speed: 4.3ms preprocess, 43.5ms inference, 0.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 45.0ms
+Speed: 4.2ms preprocess, 45.0ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+Video processing completed!
+Output saved: /content/output/output_video.mp4
+Total time: 20.35s
+Average inference time: 0.066s per frame
+Processing FPS: 14.05
+Total detections: 270
+usage: colab_kernel_launcher.py [-h] --model MODEL --source SOURCE
+                                [--conf CONF] [--iou IOU] [--device DEVICE]
+                                [--save] [--show] [--json] [--output OUTPUT]
+colab_kernel_launcher.py: error: the following arguments are required: --model, --source
+Loading model from: /content/runs/detect/my-yolov8-project-colab-16/weights/best.pt
+Model loaded successfully!
+Classes: ['animals', 'humans']
+Device: cpu
+Processing video: /content/sample_vdo.mp4
+Video info: 1280x720, 25 FPS, 286 frames
+Processing video frames...
+
+0: 544x928 (no detections), 56.8ms
+Speed: 5.4ms preprocess, 56.8ms inference, 7.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 53.3ms
+Speed: 7.6ms preprocess, 53.3ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 75.1ms
+Speed: 16.8ms preprocess, 75.1ms inference, 1.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 65.8ms
+Speed: 8.9ms preprocess, 65.8ms inference, 1.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.4ms
+Speed: 5.9ms preprocess, 43.4ms inference, 1.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.0ms
+Speed: 17.3ms preprocess, 43.0ms inference, 1.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.4ms
+Speed: 18.0ms preprocess, 43.4ms inference, 1.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 43.6ms
+Speed: 14.6ms preprocess, 43.6ms inference, 1.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 48.1ms
+Speed: 8.0ms preprocess, 48.1ms inference, 1.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 47.7ms
+Speed: 15.6ms preprocess, 47.7ms inference, 1.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 45.3ms
+Speed: 8.2ms preprocess, 45.3ms inference, 1.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 64.1ms
+Speed: 16.5ms preprocess, 64.1ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 49.9ms
+Speed: 8.5ms preprocess, 49.9ms inference, 5.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 6.1ms preprocess, 42.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 6.0ms preprocess, 42.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.3ms
+Speed: 5.8ms preprocess, 43.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.4ms
+Speed: 5.0ms preprocess, 42.4ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 6.0ms preprocess, 42.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 5.9ms preprocess, 41.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 6.1ms preprocess, 40.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 6.4ms preprocess, 40.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 6.2ms preprocess, 41.3ms inference, 3.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.9ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 5.7ms preprocess, 40.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 6.1ms preprocess, 41.2ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 6.7ms preprocess, 40.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 5.7ms preprocess, 40.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 5.3ms preprocess, 41.1ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 4.9ms preprocess, 42.1ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.5ms preprocess, 41.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 10.5% (30/286) - Avg inference: 0.119s/frame
+
+0: 544x928 1 animals, 40.6ms
+Speed: 7.1ms preprocess, 40.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 5.5ms preprocess, 40.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 4.3ms preprocess, 41.8ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.7ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 6.0ms preprocess, 40.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 5.6ms preprocess, 40.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.6ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.5ms preprocess, 41.9ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 5.2ms preprocess, 40.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.6ms preprocess, 41.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.4ms preprocess, 41.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 5.9ms preprocess, 42.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 5.9ms preprocess, 41.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.8ms preprocess, 41.3ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 5.5ms preprocess, 42.8ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.2ms
+Speed: 6.0ms preprocess, 40.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 5.8ms preprocess, 40.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.6ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.4ms preprocess, 41.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 5.7ms preprocess, 40.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 4.9ms preprocess, 42.0ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.5ms preprocess, 41.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 5.2ms preprocess, 41.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 6.1ms preprocess, 41.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 5.5ms preprocess, 42.7ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 4.5ms preprocess, 41.9ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 4.2ms preprocess, 41.0ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 5.9ms preprocess, 41.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.4ms
+Speed: 4.6ms preprocess, 42.4ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 6.0ms preprocess, 40.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 21.0% (60/286) - Avg inference: 0.054s/frame
+
+0: 544x928 1 animals, 41.1ms
+Speed: 4.9ms preprocess, 41.1ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 5.7ms preprocess, 42.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 5.6ms preprocess, 42.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.2ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 5.4ms preprocess, 41.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 6.1ms preprocess, 42.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 5.8ms preprocess, 42.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 4.5ms preprocess, 41.4ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 4.9ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.9ms preprocess, 41.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 5.8ms preprocess, 41.2ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 4.9ms preprocess, 41.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.9ms preprocess, 41.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.6ms
+Speed: 5.7ms preprocess, 40.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 5.7ms preprocess, 41.2ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.1ms
+Speed: 8.3ms preprocess, 40.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 6.1ms preprocess, 41.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 6.0ms preprocess, 40.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 4.9ms preprocess, 42.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 5.7ms preprocess, 43.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 5.9ms preprocess, 40.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.6ms preprocess, 41.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 6.3ms preprocess, 41.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.4ms preprocess, 41.7ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 49.8ms
+Speed: 5.6ms preprocess, 49.8ms inference, 6.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 135.0ms
+Speed: 13.7ms preprocess, 135.0ms inference, 12.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 110.8ms
+Speed: 14.9ms preprocess, 110.8ms inference, 12.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 13.8ms preprocess, 42.9ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 65.4ms
+Speed: 12.5ms preprocess, 65.4ms inference, 13.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 9.8ms preprocess, 41.1ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 31.5% (90/286) - Avg inference: 0.065s/frame
+
+0: 544x928 1 animals, 99.2ms
+Speed: 41.2ms preprocess, 99.2ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 105.2ms
+Speed: 22.1ms preprocess, 105.2ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 38.5ms
+Speed: 11.3ms preprocess, 38.5ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 9.5ms preprocess, 44.0ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 12.5ms preprocess, 41.4ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 120.9ms
+Speed: 18.1ms preprocess, 120.9ms inference, 18.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 51.3ms
+Speed: 6.4ms preprocess, 51.3ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 46.6ms
+Speed: 13.7ms preprocess, 46.6ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 70.1ms
+Speed: 20.9ms preprocess, 70.1ms inference, 9.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 73.3ms
+Speed: 20.7ms preprocess, 73.3ms inference, 15.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 67.3ms
+Speed: 12.5ms preprocess, 67.3ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.5ms preprocess, 42.0ms inference, 9.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 13.6ms preprocess, 42.7ms inference, 9.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 16.8ms preprocess, 42.2ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 75.4ms
+Speed: 26.9ms preprocess, 75.4ms inference, 4.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 103.4ms
+Speed: 7.0ms preprocess, 103.4ms inference, 17.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 47.2ms
+Speed: 14.0ms preprocess, 47.2ms inference, 10.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 136.9ms
+Speed: 14.3ms preprocess, 136.9ms inference, 3.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 44.0ms
+Speed: 13.6ms preprocess, 44.0ms inference, 17.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 109.9ms
+Speed: 25.0ms preprocess, 109.9ms inference, 12.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 80.7ms
+Speed: 29.1ms preprocess, 80.7ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 50.2ms
+Speed: 6.5ms preprocess, 50.2ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 6.2ms preprocess, 43.6ms inference, 3.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 6.0ms preprocess, 43.1ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 5.8ms preprocess, 42.7ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 6.1ms preprocess, 40.7ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 6.8ms preprocess, 40.5ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 5.8ms preprocess, 40.5ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.1ms
+Speed: 5.7ms preprocess, 40.1ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 5.9ms preprocess, 41.6ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 42.0% (120/286) - Avg inference: 0.098s/frame
+
+0: 544x928 1 animals, 39.5ms
+Speed: 11.9ms preprocess, 39.5ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.1ms
+Speed: 7.3ms preprocess, 40.1ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.2ms
+Speed: 5.7ms preprocess, 40.2ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.1ms
+Speed: 6.2ms preprocess, 40.1ms inference, 2.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 6.6ms preprocess, 42.1ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.3ms
+Speed: 5.9ms preprocess, 40.3ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 5.5ms preprocess, 40.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 6.0ms preprocess, 40.5ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 6.0ms preprocess, 42.0ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 6.2ms preprocess, 41.3ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.0ms
+Speed: 6.0ms preprocess, 40.0ms inference, 2.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 6.1ms preprocess, 41.2ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.1ms
+Speed: 5.7ms preprocess, 40.1ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.5ms
+Speed: 5.7ms preprocess, 43.5ms inference, 2.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 9.1ms preprocess, 41.5ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.1ms
+Speed: 6.0ms preprocess, 40.1ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 6.5ms preprocess, 41.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.4ms
+Speed: 6.0ms preprocess, 42.4ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 6.1ms preprocess, 41.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 5.8ms preprocess, 42.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 5.5ms preprocess, 41.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 4.0ms preprocess, 41.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 7.8ms preprocess, 41.6ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 5.8ms preprocess, 40.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 5.3ms preprocess, 42.1ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 3.7ms preprocess, 41.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.4ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 5.6ms preprocess, 42.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.5ms preprocess, 42.0ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 5.6ms preprocess, 40.7ms inference, 2.9ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 52.4% (150/286) - Avg inference: 0.057s/frame
+
+0: 544x928 1 animals, 41.1ms
+Speed: 6.6ms preprocess, 41.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 5.3ms preprocess, 42.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.5ms preprocess, 42.0ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 6.0ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 3.8ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 4.9ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.6ms preprocess, 41.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.4ms
+Speed: 4.5ms preprocess, 40.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.2ms
+Speed: 5.9ms preprocess, 40.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.8ms preprocess, 41.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 5.9ms preprocess, 40.8ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 5.9ms preprocess, 41.0ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.7ms preprocess, 41.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 6.7ms preprocess, 42.0ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 6.2ms preprocess, 42.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.8ms preprocess, 41.5ms inference, 2.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 5.7ms preprocess, 41.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.9ms
+Speed: 5.5ms preprocess, 42.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 6.6ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 5.8ms preprocess, 42.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 4.2ms preprocess, 42.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 5.6ms preprocess, 41.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.9ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.7ms preprocess, 41.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.6ms
+Speed: 5.5ms preprocess, 40.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 5.5ms preprocess, 41.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 6.2ms preprocess, 41.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 5.5ms preprocess, 42.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 4.8ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.7ms preprocess, 41.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 62.9% (180/286) - Avg inference: 0.054s/frame
+
+0: 544x928 1 animals, 41.3ms
+Speed: 6.7ms preprocess, 41.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 6.6ms preprocess, 41.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.4ms preprocess, 41.7ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 5.7ms preprocess, 41.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.4ms preprocess, 41.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 4.3ms preprocess, 41.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.5ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 5.4ms preprocess, 42.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.6ms preprocess, 41.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 6.6ms preprocess, 41.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.6ms
+Speed: 5.5ms preprocess, 40.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 5.3ms preprocess, 40.8ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.6ms
+Speed: 4.9ms preprocess, 42.6ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.4ms preprocess, 41.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 6.0ms preprocess, 41.6ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 6.7ms preprocess, 41.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.4ms
+Speed: 4.1ms preprocess, 42.4ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 7.9ms preprocess, 41.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.2ms preprocess, 41.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 4.3ms preprocess, 42.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 6.2ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.6ms
+Speed: 5.6ms preprocess, 40.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 6.1ms preprocess, 40.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.6ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.8ms preprocess, 42.0ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 5.6ms preprocess, 40.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 5.9ms preprocess, 42.1ms inference, 3.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.7ms preprocess, 41.8ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 6.1ms preprocess, 41.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.4ms preprocess, 43.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 73.4% (210/286) - Avg inference: 0.054s/frame
+
+0: 544x928 1 animals, 41.5ms
+Speed: 6.0ms preprocess, 41.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.7ms preprocess, 41.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.4ms
+Speed: 4.5ms preprocess, 41.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 5.8ms preprocess, 40.5ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.5ms preprocess, 41.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.7ms preprocess, 41.8ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 5.7ms preprocess, 41.6ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 6.1ms preprocess, 42.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 6.1ms preprocess, 41.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.1ms
+Speed: 5.9ms preprocess, 41.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 5.4ms preprocess, 42.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.6ms
+Speed: 5.7ms preprocess, 43.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.9ms preprocess, 41.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.7ms
+Speed: 5.8ms preprocess, 42.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 5.5ms preprocess, 42.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.6ms preprocess, 43.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 4.7ms preprocess, 40.5ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 5.8ms preprocess, 40.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 6.5ms preprocess, 41.3ms inference, 3.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.3ms
+Speed: 5.8ms preprocess, 40.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.2ms preprocess, 41.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.4ms preprocess, 42.0ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.4ms
+Speed: 5.6ms preprocess, 42.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 4.3ms preprocess, 41.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 5.5ms preprocess, 41.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.6ms preprocess, 41.5ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.5ms preprocess, 41.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.2ms
+Speed: 3.9ms preprocess, 42.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.4ms preprocess, 41.8ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.4ms preprocess, 41.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 83.9% (240/286) - Avg inference: 0.054s/frame
+
+0: 544x928 1 animals, 41.5ms
+Speed: 5.1ms preprocess, 41.5ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.2ms
+Speed: 5.5ms preprocess, 43.2ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 4.8ms preprocess, 40.9ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.6ms
+Speed: 5.7ms preprocess, 41.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 5.8ms preprocess, 42.3ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.1ms
+Speed: 4.9ms preprocess, 40.1ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.3ms
+Speed: 5.6ms preprocess, 42.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.6ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.5ms preprocess, 42.0ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.0ms
+Speed: 5.5ms preprocess, 43.0ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 5.0ms preprocess, 40.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 6.0ms preprocess, 40.9ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 6.0ms preprocess, 41.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.5ms
+Speed: 5.7ms preprocess, 42.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 6.0ms preprocess, 41.3ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 5.8ms preprocess, 41.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.8ms preprocess, 41.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.8ms
+Speed: 5.2ms preprocess, 42.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.0ms
+Speed: 5.8ms preprocess, 41.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.8ms
+Speed: 6.1ms preprocess, 40.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 43.1ms
+Speed: 5.5ms preprocess, 43.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 5.5ms preprocess, 40.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.6ms
+Speed: 5.6ms preprocess, 40.6ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.7ms
+Speed: 4.9ms preprocess, 41.7ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 6.4ms preprocess, 41.8ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 5.8ms preprocess, 40.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.5ms
+Speed: 4.7ms preprocess, 41.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.8ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.6ms
+Speed: 6.6ms preprocess, 40.6ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.9ms
+Speed: 5.7ms preprocess, 41.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 94.4% (270/286) - Avg inference: 0.054s/frame
+
+0: 544x928 1 animals, 41.9ms
+Speed: 6.7ms preprocess, 41.9ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 6.3ms preprocess, 40.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.2ms
+Speed: 4.5ms preprocess, 41.2ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.3ms
+Speed: 5.1ms preprocess, 41.3ms inference, 1.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.9ms
+Speed: 6.4ms preprocess, 40.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.1ms
+Speed: 5.3ms preprocess, 42.1ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.2ms
+Speed: 10.2ms preprocess, 40.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.7ms
+Speed: 4.0ms preprocess, 40.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 41.8ms
+Speed: 5.8ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 42.0ms
+Speed: 5.5ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 animals, 40.5ms
+Speed: 5.7ms preprocess, 40.5ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 42.1ms
+Speed: 5.8ms preprocess, 42.1ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 42.5ms
+Speed: 4.0ms preprocess, 42.5ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 41.9ms
+Speed: 4.8ms preprocess, 41.9ms inference, 0.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 40.9ms
+Speed: 5.0ms preprocess, 40.9ms inference, 1.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 (no detections), 41.7ms
+Speed: 6.6ms preprocess, 41.7ms inference, 1.2ms postprocess per image at shape (1, 3, 544, 928)
+Video processing completed!
+Output saved: /content/output_video.mp4
+Total time: 23.80s
+Average inference time: 0.067s per frame
+Processing FPS: 12.02
+Total detections: 270
+usage: colab_kernel_launcher.py [-h] --model MODEL --source SOURCE
+                                [--conf CONF] [--iou IOU] [--device DEVICE]
+                                [--save] [--show] [--json] [--output OUTPUT]
+colab_kernel_launcher.py: error: the following arguments are required: --model, --source
+Loading model from: /content/runs/detect/my-yolov8-project-colab-16/weights/best.pt
+Model loaded successfully!
+Classes: ['animals', 'humans']
+Device: cpu
+Processing video: /content/sample_vdo_2.mp4
+Video info: 3840x2160, 25 FPS, 206 frames
+Processing video frames...
+
+0: 544x928 1 humans, 90.2ms
+Speed: 27.0ms preprocess, 90.2ms inference, 6.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 80.8ms
+Speed: 6.5ms preprocess, 80.8ms inference, 10.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 146.4ms
+Speed: 35.8ms preprocess, 146.4ms inference, 26.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 154.1ms
+Speed: 33.9ms preprocess, 154.1ms inference, 15.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 118.0ms
+Speed: 23.8ms preprocess, 118.0ms inference, 22.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 80.7ms
+Speed: 8.3ms preprocess, 80.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 6.4ms preprocess, 78.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.0ms
+Speed: 6.4ms preprocess, 79.0ms inference, 10.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.3ms
+Speed: 12.4ms preprocess, 79.3ms inference, 23.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.0ms
+Speed: 11.3ms preprocess, 79.0ms inference, 28.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 136.3ms
+Speed: 25.8ms preprocess, 136.3ms inference, 18.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 80.7ms
+Speed: 32.2ms preprocess, 80.7ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.0ms
+Speed: 6.5ms preprocess, 78.0ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 62.2ms
+Speed: 7.1ms preprocess, 62.2ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 62.2ms
+Speed: 7.2ms preprocess, 62.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 62.2ms
+Speed: 7.0ms preprocess, 62.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 62.2ms
+Speed: 11.9ms preprocess, 62.2ms inference, 3.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 62.3ms
+Speed: 10.7ms preprocess, 62.3ms inference, 2.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 62.1ms
+Speed: 10.3ms preprocess, 62.1ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 63.1ms
+Speed: 7.5ms preprocess, 63.1ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 66.2ms
+Speed: 9.4ms preprocess, 66.2ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 62.1ms
+Speed: 9.1ms preprocess, 62.1ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 71.3ms
+Speed: 13.5ms preprocess, 71.3ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 72.7ms
+Speed: 13.8ms preprocess, 72.7ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 72.7ms
+Speed: 8.1ms preprocess, 72.7ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 72.7ms
+Speed: 8.8ms preprocess, 72.7ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 75.9ms
+Speed: 7.9ms preprocess, 75.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.5ms
+Speed: 9.3ms preprocess, 78.5ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 80.7ms
+Speed: 16.0ms preprocess, 80.7ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 81.4ms
+Speed: 6.7ms preprocess, 81.4ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 14.6% (30/206) - Avg inference: 0.195s/frame
+
+0: 544x928 1 humans, 78.9ms
+Speed: 6.6ms preprocess, 78.9ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 80.0ms
+Speed: 8.6ms preprocess, 80.0ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 11.9ms preprocess, 78.9ms inference, 2.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.0ms
+Speed: 13.7ms preprocess, 79.0ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 80.9ms
+Speed: 6.9ms preprocess, 80.9ms inference, 5.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 82.3ms
+Speed: 6.6ms preprocess, 82.3ms inference, 2.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 14.0ms preprocess, 78.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.3ms
+Speed: 6.9ms preprocess, 78.3ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 63.2ms
+Speed: 6.8ms preprocess, 63.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 63.1ms
+Speed: 6.6ms preprocess, 63.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 63.1ms
+Speed: 6.7ms preprocess, 63.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 59.5ms
+Speed: 6.8ms preprocess, 59.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 54.6ms
+Speed: 6.7ms preprocess, 54.6ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 53.6ms
+Speed: 6.4ms preprocess, 53.6ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 52.7ms
+Speed: 6.8ms preprocess, 52.7ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 52.7ms
+Speed: 6.8ms preprocess, 52.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 52.7ms
+Speed: 6.7ms preprocess, 52.7ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 50.1ms
+Speed: 6.6ms preprocess, 50.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 50.8ms
+Speed: 7.3ms preprocess, 50.8ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.1ms
+Speed: 6.6ms preprocess, 49.1ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.0ms
+Speed: 6.3ms preprocess, 49.0ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.0ms
+Speed: 7.0ms preprocess, 49.0ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.1ms
+Speed: 6.8ms preprocess, 49.1ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.0ms
+Speed: 6.8ms preprocess, 49.0ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.6ms
+Speed: 7.1ms preprocess, 43.6ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.7ms
+Speed: 6.8ms preprocess, 43.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.3ms
+Speed: 6.8ms preprocess, 43.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.7ms
+Speed: 6.9ms preprocess, 43.7ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.6ms
+Speed: 6.7ms preprocess, 43.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.8ms
+Speed: 6.4ms preprocess, 43.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 29.1% (60/206) - Avg inference: 0.076s/frame
+
+0: 544x928 1 humans, 43.3ms
+Speed: 6.6ms preprocess, 43.3ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.6ms
+Speed: 6.7ms preprocess, 41.6ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.7ms
+Speed: 6.6ms preprocess, 41.7ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.4ms
+Speed: 6.7ms preprocess, 42.4ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.6ms
+Speed: 6.8ms preprocess, 41.6ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.5ms
+Speed: 6.6ms preprocess, 42.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.3ms
+Speed: 6.7ms preprocess, 42.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.7ms
+Speed: 7.1ms preprocess, 42.7ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.8ms
+Speed: 7.4ms preprocess, 41.8ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.7ms
+Speed: 6.5ms preprocess, 41.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.3ms
+Speed: 6.8ms preprocess, 41.3ms inference, 2.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 40.8ms
+Speed: 6.7ms preprocess, 40.8ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.2ms
+Speed: 6.2ms preprocess, 43.2ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.8ms
+Speed: 7.7ms preprocess, 41.8ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.5ms
+Speed: 6.7ms preprocess, 41.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.3ms
+Speed: 8.1ms preprocess, 41.3ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.3ms
+Speed: 7.4ms preprocess, 41.3ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 7.3ms preprocess, 42.0ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 7.0ms preprocess, 41.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 6.9ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 7.2ms preprocess, 42.0ms inference, 2.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 7.1ms preprocess, 41.9ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.7ms
+Speed: 6.6ms preprocess, 41.7ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.1ms
+Speed: 6.9ms preprocess, 41.1ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.8ms
+Speed: 6.8ms preprocess, 42.8ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.1ms
+Speed: 10.2ms preprocess, 42.1ms inference, 3.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.5ms
+Speed: 6.4ms preprocess, 41.5ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.1ms
+Speed: 6.7ms preprocess, 41.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.2ms
+Speed: 6.7ms preprocess, 42.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 6.8ms preprocess, 41.9ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 43.7% (90/206) - Avg inference: 0.058s/frame
+
+0: 544x928 1 humans, 42.5ms
+Speed: 6.9ms preprocess, 42.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.8ms
+Speed: 6.9ms preprocess, 41.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.6ms
+Speed: 7.3ms preprocess, 41.6ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.5ms
+Speed: 6.7ms preprocess, 41.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.2ms
+Speed: 7.0ms preprocess, 42.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.7ms
+Speed: 6.8ms preprocess, 41.7ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 6.8ms preprocess, 42.0ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.4ms
+Speed: 7.2ms preprocess, 41.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.4ms
+Speed: 7.9ms preprocess, 41.4ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 7.7ms preprocess, 41.9ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 48.7ms
+Speed: 9.0ms preprocess, 48.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 6.9ms preprocess, 41.9ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.1ms
+Speed: 6.5ms preprocess, 41.1ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.3ms
+Speed: 6.5ms preprocess, 41.3ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.2ms
+Speed: 6.7ms preprocess, 42.2ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.3ms
+Speed: 6.9ms preprocess, 42.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 6.7ms preprocess, 42.0ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 14.7ms preprocess, 42.0ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 8.6ms preprocess, 41.9ms inference, 3.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 12.4ms preprocess, 42.0ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 46.5ms
+Speed: 8.2ms preprocess, 46.5ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 48.7ms
+Speed: 8.3ms preprocess, 48.7ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 13.9ms preprocess, 42.0ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 17.6ms preprocess, 41.9ms inference, 4.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 54.7ms
+Speed: 14.7ms preprocess, 54.7ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 59.4ms
+Speed: 6.9ms preprocess, 59.4ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 64.5ms
+Speed: 6.7ms preprocess, 64.5ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 58.5ms
+Speed: 13.4ms preprocess, 58.5ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 60.2ms
+Speed: 14.5ms preprocess, 60.2ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 71.6ms
+Speed: 7.2ms preprocess, 71.6ms inference, 8.3ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 58.3% (120/206) - Avg inference: 0.068s/frame
+
+0: 544x928 1 humans, 66.0ms
+Speed: 9.7ms preprocess, 66.0ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 67.5ms
+Speed: 12.8ms preprocess, 67.5ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 73.8ms
+Speed: 7.1ms preprocess, 73.8ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 69.1ms
+Speed: 7.6ms preprocess, 69.1ms inference, 5.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 70.0ms
+Speed: 6.4ms preprocess, 70.0ms inference, 4.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 70.0ms
+Speed: 14.8ms preprocess, 70.0ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 71.3ms
+Speed: 6.7ms preprocess, 71.3ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 71.3ms
+Speed: 7.5ms preprocess, 71.3ms inference, 3.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 71.3ms
+Speed: 14.3ms preprocess, 71.3ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 72.7ms
+Speed: 7.4ms preprocess, 72.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 72.7ms
+Speed: 7.2ms preprocess, 72.7ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 65.1ms
+Speed: 7.2ms preprocess, 65.1ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 61.3ms
+Speed: 7.1ms preprocess, 61.3ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.5ms
+Speed: 9.7ms preprocess, 49.5ms inference, 3.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.5ms
+Speed: 6.9ms preprocess, 49.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.5ms
+Speed: 6.6ms preprocess, 49.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.5ms
+Speed: 10.1ms preprocess, 49.5ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.5ms
+Speed: 6.5ms preprocess, 49.5ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.5ms
+Speed: 7.9ms preprocess, 49.5ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.5ms
+Speed: 6.9ms preprocess, 49.5ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 49.3ms
+Speed: 7.4ms preprocess, 49.3ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 45.8ms
+Speed: 6.7ms preprocess, 45.8ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 45.2ms
+Speed: 12.2ms preprocess, 45.2ms inference, 1.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 45.7ms
+Speed: 7.8ms preprocess, 45.7ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 45.1ms
+Speed: 8.8ms preprocess, 45.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.0ms
+Speed: 6.7ms preprocess, 43.0ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.0ms
+Speed: 6.9ms preprocess, 43.0ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.9ms
+Speed: 6.9ms preprocess, 42.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.1ms
+Speed: 6.5ms preprocess, 43.1ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.0ms
+Speed: 7.0ms preprocess, 43.0ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 72.8% (150/206) - Avg inference: 0.076s/frame
+
+0: 544x928 1 humans, 42.9ms
+Speed: 8.6ms preprocess, 42.9ms inference, 4.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.9ms
+Speed: 6.6ms preprocess, 42.9ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 6.5ms preprocess, 41.9ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 6.8ms preprocess, 42.0ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.3ms
+Speed: 6.5ms preprocess, 41.3ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.4ms
+Speed: 6.7ms preprocess, 41.4ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.4ms
+Speed: 14.9ms preprocess, 41.4ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.0ms
+Speed: 6.8ms preprocess, 42.0ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.5ms
+Speed: 7.4ms preprocess, 41.5ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.1ms
+Speed: 6.6ms preprocess, 42.1ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.2ms
+Speed: 7.2ms preprocess, 42.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 41.9ms
+Speed: 7.0ms preprocess, 41.9ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 43.4ms
+Speed: 7.3ms preprocess, 43.4ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.9ms
+Speed: 6.8ms preprocess, 42.9ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.3ms
+Speed: 6.7ms preprocess, 42.3ms inference, 2.3ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 42.1ms
+Speed: 6.5ms preprocess, 42.1ms inference, 4.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 145.7ms
+Speed: 33.8ms preprocess, 145.7ms inference, 17.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 48.9ms
+Speed: 16.0ms preprocess, 48.9ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 140.1ms
+Speed: 28.4ms preprocess, 140.1ms inference, 23.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.5ms
+Speed: 32.0ms preprocess, 79.5ms inference, 9.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 136.4ms
+Speed: 26.9ms preprocess, 136.4ms inference, 28.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 143.9ms
+Speed: 28.8ms preprocess, 143.9ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 121.6ms
+Speed: 28.3ms preprocess, 121.6ms inference, 12.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 92.3ms
+Speed: 26.5ms preprocess, 92.3ms inference, 10.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 104.9ms
+Speed: 40.9ms preprocess, 104.9ms inference, 6.9ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 89.0ms
+Speed: 18.7ms preprocess, 89.0ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 81.3ms
+Speed: 7.8ms preprocess, 81.3ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 83.6ms
+Speed: 11.3ms preprocess, 83.6ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 80.7ms
+Speed: 9.9ms preprocess, 80.7ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 15.3ms preprocess, 78.9ms inference, 2.4ms postprocess per image at shape (1, 3, 544, 928)
+Progress: 87.4% (180/206) - Avg inference: 0.106s/frame
+
+0: 544x928 1 humans, 80.5ms
+Speed: 9.1ms preprocess, 80.5ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 16.3ms preprocess, 78.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 88.1ms
+Speed: 8.6ms preprocess, 88.1ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 9.4ms preprocess, 78.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 83.1ms
+Speed: 8.4ms preprocess, 83.1ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 8.2ms preprocess, 78.9ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 13.1ms preprocess, 78.9ms inference, 2.0ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 78.9ms
+Speed: 13.8ms preprocess, 78.9ms inference, 2.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 83.8ms
+Speed: 8.6ms preprocess, 83.8ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.0ms
+Speed: 7.5ms preprocess, 79.0ms inference, 2.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.0ms
+Speed: 6.3ms preprocess, 79.0ms inference, 2.5ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.9ms
+Speed: 9.8ms preprocess, 79.9ms inference, 5.1ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 79.8ms
+Speed: 18.2ms preprocess, 79.8ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 77.6ms
+Speed: 6.5ms preprocess, 77.6ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 60.3ms
+Speed: 6.8ms preprocess, 60.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 60.3ms
+Speed: 6.7ms preprocess, 60.3ms inference, 1.8ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 60.3ms
+Speed: 6.8ms preprocess, 60.3ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 58.2ms
+Speed: 7.2ms preprocess, 58.2ms inference, 2.2ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 53.2ms
+Speed: 14.5ms preprocess, 53.2ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 52.7ms
+Speed: 7.0ms preprocess, 52.7ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 52.6ms
+Speed: 6.9ms preprocess, 52.6ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 52.4ms
+Speed: 6.8ms preprocess, 52.4ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 50.2ms
+Speed: 7.0ms preprocess, 50.2ms inference, 1.7ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 50.1ms
+Speed: 5.8ms preprocess, 50.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 50.1ms
+Speed: 5.7ms preprocess, 50.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+
+0: 544x928 1 humans, 50.1ms
+Speed: 5.6ms preprocess, 50.1ms inference, 1.6ms postprocess per image at shape (1, 3, 544, 928)
+Video processing completed!
+Output saved: /content/output_video_humans.mp4
+Total time: 47.97s
+Average inference time: 0.095s per frame
+Processing FPS: 4.29
+Total detections: 206
+usage: colab_kernel_launcher.py [-h] --model MODEL --source SOURCE
+                                [--conf CONF] [--iou IOU] [--device DEVICE]
+                                [--save] [--show] [--json] [--output OUTPUT]
+colab_kernel_launcher.py: error: the following arguments are required: --model, --source
+  adding: content/inference_results/ (stored 0%)
+  adding: content/inference_results/images (1)_detected.jpg (deflated 6%)
+  adding: content/inference_results/.ipynb_checkpoints/ (stored 0%)
+  adding: content/inference_results/images (2)_detected.jpg (deflated 7%)
+  adding: content/my-yolov8-project-colab-16/ (stored 0%)
+  adding: content/my-yolov8-project-colab-16/train_batch1.jpg (deflated 4%)
+  adding: content/my-yolov8-project-colab-16/train_batch171.jpg (deflated 14%)
+  adding: content/my-yolov8-project-colab-16/results.csv (deflated 57%)
+  adding: content/my-yolov8-project-colab-16/weights/ (stored 0%)
+  adding: content/my-yolov8-project-colab-16/weights/last.pt (deflated 8%)
+  adding: content/my-yolov8-project-colab-16/weights/epoch10.pt (deflated 8%)
+  adding: content/my-yolov8-project-colab-16/weights/best.pt (deflated 8%)
+  adding: content/my-yolov8-project-colab-16/weights/epoch0.pt (deflated 8%)
+  adding: content/my-yolov8-project-colab-16/R_curve.png (deflated 14%)
+  adding: content/my-yolov8-project-colab-16/val_batch1_pred.jpg (deflated 10%)
+  adding: content/my-yolov8-project-colab-16/labels.jpg (deflated 40%)
+  adding: content/my-yolov8-project-colab-16/train_batch170.jpg (deflated 7%)
+  adding: content/my-yolov8-project-colab-16/val_batch0_labels.jpg (deflated 7%)
+  adding: content/my-yolov8-project-colab-16/confusion_matrix_normalized.png (deflated 31%)
+  adding: content/my-yolov8-project-colab-16/val_batch1_labels.jpg (deflated 10%)
+  adding: content/my-yolov8-project-colab-16/PR_curve.png (deflated 24%)
+  adding: content/my-yolov8-project-colab-16/labels_correlogram.jpg (deflated 48%)
+  adding: content/my-yolov8-project-colab-16/train_batch2.jpg (deflated 7%)
+  adding: content/my-yolov8-project-colab-16/results.png (deflated 6%)
+  adding: content/my-yolov8-project-colab-16/F1_curve.png (deflated 11%)
+  adding: content/my-yolov8-project-colab-16/confusion_matrix.png (deflated 35%)
+  adding: content/my-yolov8-project-colab-16/args.yaml (deflated 52%)
+  adding: content/my-yolov8-project-colab-16/val_batch0_pred.jpg (deflated 7%)
+  adding: content/my-yolov8-project-colab-16/train_batch172.jpg (deflated 11%)
+  adding: content/my-yolov8-project-colab-16/P_curve.png (deflated 16%)
+  adding: content/my-yolov8-project-colab-16/val_batch2_pred.jpg (deflated 11%)
+  adding: content/my-yolov8-project-colab-16/val_batch2_labels.jpg (deflated 11%)
+  adding: content/my-yolov8-project-colab-16/train_batch0.jpg (deflated 8%)
+  adding: content/run-20250531_190851-2wpqywuk/ (stored 0%)
+  adding: content/run-20250531_190851-2wpqywuk/files/ (stored 0%)
+  adding: content/run-20250531_190851-2wpqywuk/files/requirements.txt (deflated 55%)
+  adding: content/run-20250531_190851-2wpqywuk/files/wandb-metadata.json (deflated 44%)
+  adding: content/run-20250531_190851-2wpqywuk/files/output.log (deflated 66%)
+  adding: content/run-20250531_190851-2wpqywuk/files/config.yaml (deflated 72%)
+  adding: content/run-20250531_190851-2wpqywuk/files/wandb-summary.json (stored 0%)
+  adding: content/run-20250531_190851-2wpqywuk/tmp/ (stored 0%)
+  adding: content/run-20250531_190851-2wpqywuk/tmp/code/ (stored 0%)
+  adding: content/run-20250531_190851-2wpqywuk/run-2wpqywuk.wandb (deflated 74%)
+  adding: content/run-20250531_190851-2wpqywuk/logs/ (stored 0%)
+  adding: content/run-20250531_190851-2wpqywuk/logs/debug-core.log (deflated 82%)
+  adding: content/run-20250531_190851-2wpqywuk/logs/debug-internal.log (deflated 71%)
+  adding: content/run-20250531_190851-2wpqywuk/logs/debug.log (deflated 68%)

@@ -1,0 +1,9 @@
+# YOLOv8 Dataset Configuration
+path: H:\GNN\main\combined\dataset_2
+train: train/images
+val: val/images
+test: test/images
+
+# Classes
+nc: 1
+names: ['animals']
